@@ -1,0 +1,207 @@
+package MainPackage;
+
+import static MainPackage.Constants.*;
+
+public class GameSystem {
+	
+	// 盤面の更新メソッド
+	public static Board boardCheck(Board board,int turn, int x, int y) {
+		int playersCell, enemysCell;
+		int targetCell;
+		
+		if (turn == PLAYER) {
+			playersCell = WHITE;
+			enemysCell  = BLACK;
+		} else {
+			playersCell = BLACK;
+			enemysCell  = WHITE;
+		}
+		
+		if (board.getCell(x, y) != BLANK) {
+			board.setPutable(false);
+			return board;
+		}
+		
+		// 上
+		for (int i=y-1; i>=0; i--) {
+			targetCell = board.getCell(x, i);
+			if (targetCell != enemysCell) {
+				if (i == y-1) {
+					board.setPutable(false);
+					break;
+				} else {
+					if (targetCell == playersCell) {
+						board.setCell(x, y, playersCell);
+						for (int j=i; j<y; j++) {
+							board.setCell(x, j, playersCell);
+						}
+						board.setPutable(true);
+						break;
+					}
+				}
+			}
+		}
+		//　右
+		for (int i=x+1; i<BOARD_LENGTH; i++) {
+			targetCell = board.getCell(i, y);
+			if (targetCell != enemysCell) {
+				if (i == x+1) {
+					board.setPutable(false);
+					break;
+				} else {
+					if (targetCell == playersCell) {
+						board.setCell(x, y, playersCell);
+						for (int j=i; j>x; j--) {
+							board.setCell(j, y, playersCell);
+						}
+						board.setPutable(true);
+						break;
+					}
+				}
+			}
+		}
+		//　左
+		for (int i=x-1; i>=0; i--) {
+			targetCell = board.getCell(i, y);
+			if (targetCell != enemysCell) {
+				if (i == x-1) {
+					board.setPutable(false);
+					break;
+				} else {
+					if (targetCell == playersCell) {
+						board.setCell(x, y, playersCell);
+						for (int j=i; j<x; j++) {
+							board.setCell(j, y, playersCell);
+						}
+						board.setPutable(true);
+						break;
+					}
+				}
+			}
+		}
+		//　下
+		for (int i=y+1; i<BOARD_LENGTH; i++) {
+			targetCell = board.getCell(x, i);
+			if (targetCell != enemysCell) {
+				if (i == y+1) {
+					board.setPutable(false);
+					break;
+				} else {
+					if (targetCell == playersCell) {
+						board.setCell(x, y, playersCell);
+						for (int j=i; j>y; j--) {
+							board.setCell(x, j, playersCell);
+						}
+						board.setPutable(true);
+						break;
+					}
+				}
+			}
+		}
+		// 斜め右下
+		int i = x + 1, j = y + 1;
+		while(i < BOARD_LENGTH && j < BOARD_LENGTH) {
+			targetCell = board.getCell(i, j);
+			if (targetCell != enemysCell) {
+				if (i == x+1 || j == y+1) {
+					board.setPutable(false);
+					break;
+				} else {
+					if (targetCell == playersCell) {
+						board.setCell(x, y, playersCell);
+						int ti = i, tj = j;
+						while(ti > x && tj > y) {
+							board.setCell(ti, tj, playersCell);
+							ti--;
+							tj--;
+						}
+						board.setPutable(true);
+						break;
+					}
+				}
+			}
+			i++;
+			j++;
+		}
+		
+		//　斜め左下
+		i = x - 1;
+		j = y + 1;
+		while(i >= 0 && j < BOARD_LENGTH) {
+			targetCell = board.getCell(i, j);
+			if (targetCell != enemysCell) {
+				if (i == x-1 || j == y+1) {
+					board.setPutable(false);
+					break;
+				} else {
+					if (targetCell == playersCell) {
+						board.setCell(x, y, playersCell);
+						int ti = i, tj = j;
+						while(ti < x && tj > y) {
+							board.setCell(ti, tj, playersCell);
+							ti++;
+							tj--;
+						}
+						board.setPutable(true);
+						break;
+					}
+				}
+			}
+			i--;
+			j++;
+		}
+		//　斜め右上
+		i = x + 1;
+		j = y - 1;
+		while(i < BOARD_LENGTH && j >= 0) {
+			targetCell = board.getCell(i, j);
+			if (targetCell != enemysCell) {
+				if (i == x+1 || j == y-1) {
+					board.setPutable(false);
+					break;
+				} else {
+					if (targetCell == playersCell) {
+						board.setCell(x, y, playersCell);
+						int ti = i, tj = j;
+						while(ti > x && tj < y) {
+							board.setCell(ti, tj, playersCell);
+							ti--;
+							tj++;
+						}
+						board.setPutable(true);
+						break;
+					}
+				}
+			}
+			i++;
+			j--;
+		}
+		//　斜め左上
+		i = x - 1;
+		j = y - 1;
+		while(i >= 0 && j >= 0) {
+			targetCell = board.getCell(i, j);
+			if (targetCell != enemysCell) {
+				if (i == x-1 || j == y-1) {
+					board.setPutable(false);
+					break;
+				} else {
+					if (targetCell == playersCell) {
+						board.setCell(x, y, playersCell);
+						int ti = i, tj = j;
+						while(ti < x && tj < y) {
+							board.setCell(ti, tj, playersCell);
+							ti++;
+							tj++;
+						}
+						board.setPutable(true);
+						break;
+					}
+				}
+			}
+			i--;
+			j--;
+		}
+		return board;
+	}
+}

@@ -1,0 +1,10 @@
+package MainPackage;
+
+public class Ai {
+	public Ai() {}
+	
+	public Board Thinking(Board board) {
+		
+		return board;
+	}
+}

@@ -1,0 +1,28 @@
+package MainPackage;
+
+import static MainPackage.Constants.*;
+
+public class GameSystem {
+	public static void boardCheck(Board board,int turn, int x, int y) {
+		int playersCell, enemysCell;
+		if (turn == PLAYER) {
+			playersCell = WHITE;
+			enemysCell  = BLACK;
+		} else {
+			playersCell = BLACK;
+			enemysCell  = WHITE;
+		}
+		
+		// 上
+		for (int i=y; i>=0; i--) {
+			if (board.getCell(x, i) != BLANK) {
+				continue;
+			} else {
+				break;
+			}
+		}
+		//　右
+		//　左
+		//　下
+	}
+}

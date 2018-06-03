@@ -1,0 +1,22 @@
+package MainPackage;
+
+import javafx.scene.canvas.*;
+
+import static MainPackage.Constants.*;
+
+public class Board extends Canvas {
+	private int[][] board;
+	
+	// ”Õ–Ê‚Ì‰Šú‰»
+	Board() {
+		for (int i=0; i<BOARD_LENGTH; i++) {
+			for (int j=0; j<BOARD_LENGTH; j++) {
+				board[i][j] = BLANK;
+			}
+		}
+		board[3][3] = BLACK;
+		board[4][4] = BLACK;
+		board[3][4] = WHITE;
+		board[4][3] = WHITE;
+	}
+}

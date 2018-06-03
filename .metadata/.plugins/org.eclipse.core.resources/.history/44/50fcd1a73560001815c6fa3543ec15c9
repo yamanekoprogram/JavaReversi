@@ -1,0 +1,170 @@
+package MainPackage;
+
+import javafx.application.*;
+import javafx.scene.*;
+import javafx.stage.*;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.shape.*;
+import javafx.scene.paint.*;
+import javafx.event.*;
+import javafx.geometry.Pos;
+import javafx.scene.input.*;
+import javafx.scene.canvas.*;
+
+import static MainPackage.Constants.*;
+import static MainPackage.GameSystem.*;
+
+public class ReversiMain extends Application {
+	private Canvas cv;
+	private GraphicsContext gc;
+	private Board gameboard;
+	private Label turn_lb;
+	private Label white_lb;
+	private Label black_lb;
+	
+	private int turn = PLAYER;
+	
+	private Ai ai = new Ai();
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
+	
+	public void start(Stage stage)throws Exception {
+		gameboard = new Board();
+		
+		// コントロールの作成
+		cv = new Canvas(500, 400);
+		gc = cv.getGraphicsContext2D();
+		turn_lb = new Label("Player");
+		white_lb = new Label("WHITE:" + gameboard.countCell(WHITE));
+		black_lb = new Label("BLACK:" + gameboard.countCell(BLACK));
+		
+		drawBoard();
+		
+		//　ペインの作成
+		BorderPane bp = new BorderPane();
+		
+		//　ペインへの追加
+		VBox vb = new VBox();
+		vb.getChildren().add(turn_lb);
+		vb.getChildren().add(white_lb);
+		vb.getChildren().add(black_lb);
+		
+		bp.setRight(vb);
+		bp.setLeft(cv);
+		
+		
+		//　シーンの作成
+		Scene sc = new Scene(bp, 600, 400);
+		
+		// クリックイベントの登録
+		sc.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent e) {
+				int x = cellPos(e.getX());
+				int y = cellPos(e.getY());
+				gameboard = GameSystem.boardCheck(gameboard, turn, x, y);
+				if (!gameboard.getPutable()) return;
+				
+				if (gameboard.jadge() != 0) {
+					String mes;
+					switch(gameboard.jadge()) {
+					case 1:
+						mes = "WHITE WIN";
+						break;
+					case 2:
+						mes = "BLACK WIN";
+						break;
+					case 3:
+						mes = "Draw Game";
+						break;
+					default:
+						mes = "Error";
+						break;
+					}
+					Alert al = new Alert(Alert.AlertType.INFORMATION);
+					al.setTitle("Game Set");
+					al.getDialogPane().setHeaderText(mes);
+					al.show();
+				}
+				if (turn == PLAYER) {
+					turn_lb.setText("ENEMY");
+					turn = ENEMY;
+				} else {
+					turn_lb.setText("PLAYER");
+					turn = PLAYER;
+				}
+				drawBoard();
+				gc.setFill(Color.GREEN);
+				gc.fillRect(450, 0, CELL_SIZE, CELL_SIZE);
+				if (turn == PLAYER) gc.setFill(Color.WHITE);
+					else gc.setFill(Color.BLACK);
+				gc.fillOval(450, 0, CELL_SIZE, CELL_SIZE);
+				
+				aiTurn();
+			}
+		});
+		
+		//　ステージへの追加a
+		stage.setScene(sc);
+		
+		// ステージの表示
+		stage.setTitle("REVERSI");
+		stage.show();
+	}
+	
+	//---AI---
+	private void aiTurn() {
+		
+		gameboard = ai.Thinking(gameboard);
+		if (turn == PLAYER) {
+			turn_lb.setText("ENEMY");
+			turn = ENEMY;
+		} else {
+			turn_lb.setText("PLAYER");
+			turn = PLAYER;
+		} 
+		drawBoard();
+		gc.setFill(Color.GREEN);
+		gc.fillRect(450, 0, CELL_SIZE, CELL_SIZE);
+		if (turn == PLAYER) gc.setFill(Color.WHITE);
+			else gc.setFill(Color.BLACK);
+		gc.fillOval(450, 0, CELL_SIZE, CELL_SIZE);
+	}
+	
+	// 盤面描画メソッド
+	private void drawBoard() {
+		white_lb.setText("WHITE:" + gameboard.countCell(WHITE));
+		black_lb.setText("BLACK:" + gameboard.countCell(BLACK));
+		
+		gc.clearRect(0, 0, cv.getWidth(), cv.getHeight());
+		for (int i=0; i<BOARD_LENGTH; i++) {
+			for (int j=0; j<BOARD_LENGTH; j++) {
+				gc.setFill(Color.BLACK);
+				gc.fillRect(i * CELL_SIZE, j * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+				gc.setFill(Color.GREEN);
+				gc.fillRect(i * CELL_SIZE, j * CELL_SIZE, CELL_SIZE - 2, CELL_SIZE - 2);
+				
+				switch(gameboard.getCell(i, j)) {
+					case WHITE:
+						gc.setFill(Color.WHITE);
+						gc.fillOval(i * CELL_SIZE, j * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+						break;
+					case BLACK:
+						gc.setFill(Color.BLACK);
+						gc.fillOval(i * CELL_SIZE, j * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+						break;
+				}	
+			}
+		}
+	}
+	
+	// マウス座標をマス座標へ変換する
+	private int cellPos(double p) {
+		int pos = (int)p / CELL_SIZE;
+		if (pos > 7) pos = 7;
+		return (pos);
+	}
+}

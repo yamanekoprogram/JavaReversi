@@ -1,0 +1,11 @@
+package MainPackage;
+
+public class Ai {
+	private Board board;
+	
+	public Ai(Board board) {
+		this.board = board;
+	}
+	
+	
+}

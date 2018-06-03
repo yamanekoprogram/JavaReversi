@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="javafx.scene.input.MouseEvent"/>
+<fullyQualifiedTypeName name="javafx.geometry.Pos"/>
+<fullyQualifiedTypeName name="javafx.scene.control.Alert.AlertType"/>
+<fullyQualifiedTypeName name="MainPackage.Constants"/>
+<fullyQualifiedTypeName name="MainPackage.GameSystem"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="javafx.animation.Transition"/>
+<fullyQualifiedTypeName name="javafx.util.Duration"/>
+</qualifiedTypeNameHistroy>

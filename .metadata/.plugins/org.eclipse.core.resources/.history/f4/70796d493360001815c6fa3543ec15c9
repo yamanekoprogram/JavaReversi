@@ -1,0 +1,19 @@
+package MainPackage;
+
+import static MainPackage.Constants.*;
+public class Ai {
+	public Ai() {}
+	
+	public Board Thinking(Board board) {
+		int x = (int)(Math.random() * BOARD_LENGTH);
+		int y = (int)(Math.random() * BOARD_LENGTH);
+		board.setPutable(false);
+		
+		while(board.getPutable()) {
+			
+		}
+		x = (int)(Math.random() * BOARD_LENGTH);
+		y = (int)(Math.random() * BOARD_LENGTH);
+		return board;
+	}
+}

@@ -1,0 +1,5 @@
+package MainPackage;
+
+public class GameSystem {
+	public static void test() {}
+}

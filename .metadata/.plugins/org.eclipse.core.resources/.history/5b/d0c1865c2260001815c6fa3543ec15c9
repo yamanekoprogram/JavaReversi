@@ -1,0 +1,56 @@
+package MainPackage;
+
+import static MainPackage.Constants.*;
+
+public class GameSystem {
+	public static Board boardCheck(Board board,int turn, int x, int y) {
+		int playersCell, enemysCell;
+		int targetCell;
+		
+		if (turn == PLAYER) {
+			playersCell = WHITE;
+			enemysCell  = BLACK;
+		} else {
+			playersCell = BLACK;
+			enemysCell  = WHITE;
+		}
+		
+		// 上
+		for (int i=y-1; i>=0; i--) {
+			targetCell = board.getCell(x, i);
+			if (targetCell != enemysCell) {
+				if (i == y-1) {
+					break;
+				} else {
+					if (targetCell == playersCell) {
+						board.setCell(x , y, playersCell);
+						for (int j=i; j<y; j++) {
+							board.setCell(x, j, playersCell);
+						}
+						break;
+					}
+				}
+			}
+		}
+		//　右
+		for (int i=x+1; i<BOARD_LENGTH; i++) {
+			targetCell = board.getCell(i, y);
+			if (targetCell != enemysCell) {
+				if (i == x+1) {
+					break;
+				} else {
+					if (targetCell == playersCell) {
+						board.setCell(x , y, playersCell);
+						for (int j=i; j>x; j--) {
+							board.setCell(i, y, playersCell);
+						}
+						break;
+					}
+				}
+			}
+		}
+		//　左
+		//　下
+		return board;
+	}
+}
