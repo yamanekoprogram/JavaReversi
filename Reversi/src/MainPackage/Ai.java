@@ -1,0 +1,34 @@
+package MainPackage;
+
+import static MainPackage.Constants.*;
+public class Ai {
+	public Ai() {}
+	
+	public Board Thinking(Board board) {
+		int x = (int)(Math.random() * BOARD_LENGTH);
+		int y = (int)(Math.random() * BOARD_LENGTH);
+		int count = 0;
+		board.setPutable(false);
+		
+		while(!board.getPutable() && board.jadge() == 0) {
+			if (count > 1000) {
+				board.setPutable(true);
+				System.out.println("pass");
+				break;
+			}
+			x = (int)(Math.random() * BOARD_LENGTH);
+			y = (int)(Math.random() * BOARD_LENGTH);
+			board = GameSystem.boardCheck(board, ENEMY, x, y);
+			count++;
+		}
+		System.out.println(count);
+		
+//		for (int i=0; i<BOARD_LENGTH; i++) {
+//			for (int j=0; j<BOARD_LENGTH; j++) {
+//				board.setCell(i, j, BLACK);
+//			}
+//		}
+
+		return board;
+	}
+}
